@@ -1,0 +1,30 @@
+/* resources/css/app.css */
+
+/* Core CSS Assets from node_modules */
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+@import "admin-lte/dist/css/adminlte.min.css";
+
+@import "summernote/dist/summernote-bs4.min.css";
+
+/* Your custom CSS can go here */
+.dropdown-toggle::after {
+    display: inline-block; /* Penting agar bisa terlihat */
+    margin-left: .255em; /* Memberi sedikit jarak dari teks */
+    vertical-align: .255em; /* Menyelaraskan secara vertikal */
+    content: ""; /* Penting untuk pseudo-elemen */
+    border-top: .3em solid; /* Bagian atas segitiga */
+    border-right: .3em solid transparent; /* Sisi kanan transparan */
+    border-bottom: 0; /* Tidak ada border bawah */
+    border-left: .3em solid transparent; /* Sisi kiri transparan */
+}
+
+.table {
+  table-layout: auto;
+  width: 100%;
+}
+
+.col-min-width {
+  width: 1%;
+  white-space: nowrap;
+}
