@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('title', '- Barang - Edit')
+
 @section('content')
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -70,13 +72,24 @@
                   @enderror
                 </div>
                 <div class="form-group">
+                  <label for="satuan">Satuan</label>
+                  <input type="text" class="form-control @error('satuan') is-invalid @enderror" id="satuan"
+                    name="satuan" placeholder="Masukkan Satuan Barang" value="{{ old('satuan', $product->satuan) }}"
+                    required>
+                  @error('satuan')
+                    <div class="invalid-feedback">
+                      {{ $message }}
+                    </div>
+                  @enderror
+                </div>
+                <div class="form-group">
                   <label for="id_supplier">Supplier</label>
                   <select name="id_supplier" id="id_supplier" class="form-control">
                     <option value="">Pilih salah satu supplier</option>
                     @foreach ($suppliers as $supplier)
                       <option value="{{ $supplier->id }}"
                         {{ old('id_supplier', $product->id_supplier) == $supplier->id ? 'selected' : '' }}>
-                        {{ $supplier->nama . '(' . $supplier->telepon . ')' }}
+                        {{ $supplier->nama . ' (' . $supplier->telepon . ')' }}
                       </option>
                     @endforeach
                   </select>

@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('title', '- Supplier - Create')
+
 @section('content')
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -31,7 +33,10 @@
               @csrf
               <div class="card-body">
                 <div class="form-group">
-                  <label for="nama">Nama Supplier</label>
+                  <label for="nama">
+                    Nama Supplier
+                    <span class="ms-2 text-danger">*</span>
+                  </label>
                   <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama"
                     name="nama" placeholder="Masukkan Nama Supplier (maks.50 karakter)" value="{{ old('nama') }}"
                     required autofocus>
@@ -42,10 +47,12 @@
                   @enderror
                 </div>
                 <div class="form-group">
-                  <label for="telepon">No. Telepon</label>
+                  <label for="telepon">
+                    No. Telepon
+                    <span class="ms-2 text-danger">*</span>
+                  </label>
                   <input type="text" class="form-control @error('telepon') is-invalid @enderror" id="telepon"
-                    name="telepon" placeholder="Masukkan No. Telepon Supplier" value="{{ old('telepon') }}"
-                    required>
+                    name="telepon" placeholder="Masukkan No. Telepon Supplier" value="{{ old('telepon') }}" required>
                   @error('telepon')
                     <div class="invalid-feedback">
                       {{ $message }}
@@ -53,10 +60,12 @@
                   @enderror
                 </div>
                 <div class="form-group">
-                  <label for="email">Email</label>
+                  <label for="email">
+                    Email
+                    <span class="ms-2 text-muted font-italic">(opsional)</span>
+                  </label>
                   <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
-                    name="email" placeholder="Masukkan No. Telepon Supplier" value="{{ old('email') }}"
-                    required>
+                    name="email" placeholder="Masukkan Email Supplier" value="{{ old('email') }}">
                   @error('email')
                     <div class="invalid-feedback">
                       {{ $message }}
@@ -64,8 +73,12 @@
                   @enderror
                 </div>
                 <div class="form-group">
-                  <label for="alamat">Alamat</label>
-                  <textarea class="form-control" name="alamat" id="alamat" cols="30" rows="3" placeholder="Masukkan alamat Supplier"></textarea>
+                  <label for="alamat">
+                    Alamat
+                    <span class="ms-2 text-danger">*</span>
+                  </label>
+                  <textarea class="form-control" name="alamat" id="alamat" cols="30" rows="3"
+                    placeholder="Masukkan Alamat Supplier" required>{{ old('alamat') }}</textarea>
                   @error('alamat')
                     <div class="invalid-feedback">
                       {{ $message }}

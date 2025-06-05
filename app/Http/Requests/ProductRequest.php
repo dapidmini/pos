@@ -57,12 +57,11 @@ class ProductRequest extends FormRequest
                 'integer',
                 'exists:suppliers,id',
             ],
-            
-            // 'satuan' => [ // <-- Aturan untuk satuan
-            //     'required',
-            //     'string',
-            //     'max:20', // Sesuaikan dengan migrasi
-            // ],
+            'satuan' => [ // <-- Aturan untuk satuan
+                'required',
+                'string',
+                'max:20', // Sesuaikan dengan migrasi
+            ],
         ];
 
         if ($this->isMethod('post')) {

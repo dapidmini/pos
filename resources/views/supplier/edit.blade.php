@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('title', '- Supplier - Edit')
+
 @section('content')
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -11,7 +13,7 @@
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="{{ route('suppliers.index') }}">Supplier</a></li>
-            <li class="breadcrumb-item active">Tambah Supplier</li>
+            <li class="breadcrumb-item active">Edit Supplier</li>
           </ol>
         </div>
       </div>
@@ -56,8 +58,7 @@
                 <div class="form-group">
                   <label for="email">Email</label>
                   <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
-                    name="email" placeholder="Masukkan No. Telepon Supplier" value="{{ old('email', $supplier->email) }}"
-                    required>
+                    name="email" placeholder="Masukkan No. Telepon Supplier" value="{{ old('email', $supplier->email) }}">
                   @error('email')
                     <div class="invalid-feedback">
                       {{ $message }}
@@ -66,7 +67,8 @@
                 </div>
                 <div class="form-group">
                   <label for="alamat">Alamat</label>
-                  <textarea name="alamat" id="alamat" cols="30" rows="3">{{ old('alamat', $supplier->alamat) }}</textarea>
+                  <textarea class="form-control" name="alamat" id="alamat" cols="30" rows="3"
+                    placeholder="Masukkan Alamat Supplier" required>{{ old('alamat', $supplier->alamat) }}</textarea>
                   @error('alamat')
                     <div class="invalid-feedback">
                       {{ $message }}

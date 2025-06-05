@@ -1,5 +1,7 @@
 @extends('layouts.master')
 
+@section('title', '- Kategori')
+
 @section('content')
   <div class="container-fluid ms-3 mt-3 pr-3">
     <div class="d-flex justify-content-start align-items-center">
