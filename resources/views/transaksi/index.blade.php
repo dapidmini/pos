@@ -3,7 +3,7 @@
 @section('title', '- Transaksi')
 
 @section('content')
-  <div class="container-fluid ms-3 mt-3 pr-3">
+  <div class="container-fluid">
     <div class="d-flex justify-content-start align-items-center">
       <h1 class="mr-3">Daftar Transaksi</h1>
       <a href="{{ route('transaksis.create') }}" class="btn btn-primary">Buat Baru</a>
@@ -33,6 +33,7 @@
                   <tr>
                     <th class="col-min-width">No.</th>
                     <th class="col-min-width">Tanggal</th>
+                    <th class="col-min-width">Invoice</th>
                     <th class="col-min-width">Nama Customer</th>
                     <th class="col-min-width">Total</th>
                     <th class="text-center">Actions</th>
@@ -42,7 +43,8 @@
                   @foreach ($data as $i => $row)
                     <tr>
                       <td>{{ $i+1 }}.</td>
-                      <td>{{ $row->tanggal->format('l, d M Y H:i:s') }}</td>
+                      <td>{{ $row->tanggal->format('l, d M Y H:i') }}</td>
+                      <td>{{ $row->kode_invoice }}</td>
                       <td>{{ $row->nama_customer }}</td>
                       <td>{{ number_format($row->total, 0, ',', '.') }}</td>
                       <td class="text-center">

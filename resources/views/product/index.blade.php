@@ -3,7 +3,7 @@
 @section('title', '- Barang')
 
 @section('content')
-  <div class="container-fluid ms-3 mt-3 pr-3">
+  <div class="container-fluid">
     <div class="d-flex justify-content-start align-items-center">
       <h1 class="mr-3">Daftar Barang</h1>
       <a href="{{ route('products.create') }}" class="btn btn-primary">Buat Baru</a>

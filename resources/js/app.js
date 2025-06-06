@@ -7,12 +7,10 @@
 // import "jquery-ui";
 
 // Bootstrap (depends on jQuery)
-import "bootstrap";
+// import "bootstrap";
 
 // Supporting Libraries
 import "moment/moment.js"; // Moment.js harus ada jika ada plugin yang membutuhkannya
-
-import "summernote/dist/summernote-bs4.min.js";
 
 // AdminLTE Core JS
 import "admin-lte/dist/js/adminlte.js";
@@ -26,13 +24,4 @@ $(document).ready(function () {
     // jQuery UI conflict resolution (from AdminLTE template)
     // Pastikan Anda menempatkan ini setelah import 'jquery' dan 'jquery-ui'
     $.widget.bridge("uibutton", $.ui.button);
-
-    // const textarea = document.querySelector('.summernote');
-    // console.log('asd', textarea, typeof summernote);
-    // if (typeof summernote === 'function' && textarea !== null) {
-    //     alert('asd');
-    //     $(".summernote").summernote();
-    // // } else {
-    // //     alert('qweqwe');
-    // }
 });

@@ -11,6 +11,10 @@ class Transaksi extends Model
 
     protected $guarded = ['id'];
 
+    protected $casts = [
+        'tanggal' => 'datetime',
+    ];
+
     public function details()
     {
         return $this->hasMany(DetailTransaksi::class, 'transaksi_id');
@@ -19,5 +23,13 @@ class Transaksi extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getTanggalYyyymmddAttribute(): string
+    {
+        if ($this->tanggal) {
+            return $this->tanggal->format('Ymd');
+        }
+        return '';
     }
 }

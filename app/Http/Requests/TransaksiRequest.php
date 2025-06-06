@@ -30,7 +30,6 @@ class TransaksiRequest extends FormRequest
             'tanggal' => [
                 'required',
                 'date',
-                'before_or_equal:today',
             ],
             'nama_customer' => [
                 'required',
@@ -52,37 +51,37 @@ class TransaksiRequest extends FormRequest
                 'string',
                 'max:12'
             ],
-            // validasi untuk detail transaksi ditaruh di sini
-            'details' => [
-                'required',
-                'array',
-                'min:1',
-            ],
-            'details.*.id' => [
-                'nullable',
-                'integer',
-                'exists:detail_transaksis,id',
-            ],
-            'details.*.product_id' => [
-                'required',
-                'integer',
-                'exists:products,id',
-            ],
-            'details.*.jumlah' => [
-                'required',
-                'integer',
-                'min:1',
-            ],
-            'details.*.harga' => [
-                'required',
-                'integer',
-                'min:0',
-            ],
-            'details.*.catatan' => [
-                'nullable',
-                'string',
-                'max:255',
-            ],
+            // // validasi untuk detail transaksi ditaruh di sini
+            // 'details' => [
+            //     'required',
+            //     'array',
+            //     'min:1',
+            // ],
+            // 'details.*.id' => [
+            //     'nullable',
+            //     'integer',
+            //     'exists:detail_transaksis,id',
+            // ],
+            // 'details.*.product_id' => [
+            //     'required',
+            //     'integer',
+            //     'exists:products,id',
+            // ],
+            // 'details.*.jumlah' => [
+            //     'required',
+            //     'integer',
+            //     'min:1',
+            // ],
+            // 'details.*.harga' => [
+            //     'required',
+            //     'integer',
+            //     'min:0',
+            // ],
+            // 'details.*.catatan' => [
+            //     'nullable',
+            //     'string',
+            //     'max:255',
+            // ],
         ];
 
         return $rules;
