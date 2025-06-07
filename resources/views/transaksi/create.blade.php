@@ -127,7 +127,26 @@
               Tambah Item
             </button>
           </div>
-          <div class="card-body"></div>
+          <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+              <thead>
+                <tr>
+                  <th class="col-min-width">No.</th>
+                  <th class="col-min-width">Nama Barang</th>
+                  <th class="col-min-width">Kategori</th>
+                  <th class="col-min-width">Jumlah</th>
+                  <th class="col-min-width">Satuan</th>
+                  <th class="col-min-width">Harga</th>
+                  <th class="col-min-width">Diskon</th>
+                  <th class="col-min-width">Subtotal</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="details-container">
+              </tbody>
+            </table>
+
+          </div>
         </div>
 
         <button type="submit" class="btn btn-primary">
@@ -170,23 +189,23 @@
                   @if ($products)
                     @foreach ($products as $i => $product)
                       <tr>
-                        <td>{{ $i+1 }}.</td>
+                        <td>{{ $i + 1 }}.</td>
                         <td>{{ $product->nama }}</td>
                         <td>{{ $product->category->nama }}</td>
                         <td>{{ $product->supplier->nama }}</td>
                         <td>Rp {{ number_format($product->harga_jual, 0, ',', '.') }}</td>
                         <td>{{ number_format($product->stok, 0, ',', '.') . ' ' . $product->satuan }}</td>
                         <td>
-                          <button class="btn btn-info" id="btnPilih-{{ $product->id }}" 
-                            data-id="{{ $product->id }}"
-                            data-nama="{{ $product->nama }}"
+                          <button class="btn btn-info" id="btnPilih-{{ $product->id }}"
+                            data-id="{{ $product->id }}" data-nama="{{ $product->nama }}"
                             data-id_kategori="{{ $product->id_kategori }}"
                             data-nama_kategori="{{ $product->category->nama }}"
                             data-id_supplier="{{ $product->id_supplier }}"
                             data-nama_supplier="{{ $product->supplier->nama }}"
                             data-harga_jual="{{ $product->harga_jual }}"
-                            data-stok="{{ $product->stok }}"
-                          >Pilih</button></td>
+                            data-satuan="{{ $product->satuan }}"
+                            data-stok="{{ $product->stok }}">Pilih</button>
+                        </td>
                       </tr>
                     @endforeach
                   @endif
@@ -217,25 +236,95 @@
   <script>
     $(document).ready(function() {
       const modalSearchProduct = $('#modalSearchProduct');
+      const detailsContainer = $('#details-container');
+      let existingRows = detailsContainer.find('tr');
 
       modalSearchProduct.on('click', 'button[id^="btnPilih-"]', function() {
         const btnPilih = $(this);
         const productId = btnPilih.data('id');
         const pilih = { // data produk yang barusan dipilih di popup modal
-          id : btnPilih.data('id'),
-          nama : btnPilih.data('nama'),
-          id_kategori : btnPilih.data('id_kategori'),
-          nama_kategori : btnPilih.data('nama_kategori'),
-          id_supplier : btnPilih.data('id_supplier'),
-          nama_supplier : btnPilih.data('nama_supplier'),
-          harga_jual : btnPilih.data('harga_jual'),
-          stok : btnPilih.data('stok'),
+          id: btnPilih.data('id'),
+          nama: btnPilih.data('nama'),
+          id_kategori: btnPilih.data('id_kategori'),
+          nama_kategori: btnPilih.data('nama_kategori'),
+          id_supplier: btnPilih.data('id_supplier'),
+          nama_supplier: btnPilih.data('nama_supplier'),
+          harga_jual: btnPilih.data('harga_jual'),
+          satuan: btnPilih.data('satuan'),
+          stok: btnPilih.data('stok'),
         }
-        console.log('pilih', pilih);
-        
+
         modalSearchProduct.modal('hide');
         console.log('barang yang dipilih', pilih);
+        /*
+                  <th class="col-min-width">No.</th>
+                  <th class="col-min-width">Nama Barang</th>
+                  <th class="col-min-width">Kategori</th>
+                  <th class="col-min-width">Jumlah</th>
+                  <th class="col-min-width">Satuan</th>
+                  <th class="col-min-width">Harga</th>
+                  <th class="col-min-width">Diskon</th>
+                  <th class="col-min-width">Subtotal</th>
+                  <th class="text-center">Actions</th>
+                  */
+        let existingRows = existingRows.length;
+        const elemRow = document.createElement('tr');
+
+        for (let index = 0; index < 9; index++) {
+          const elemCell = document.createElement('td');
+          let elemHidden;
+
+          if (index == 0) {
+            elemCell.textContent = (existingRows + 1).toString() + '.';
+          } else if (index == 1) { // nama product
+            elemHidden = setupProductHiddenElem('product_id', pilih.id, existingRows+1);
+            elemCell.appendChild(elemHidden);
+            elemCell.textContent = pilih.nama;
+          } else if (index == 2) { // kategori
+            elemCell.textContent = pilih.nama_kategori;
+          } else if (index == 3) { // jumlah
+            elemHidden = setupProductHiddenElem('jumlah', 0), existingRows+1;
+            elemCell.appendChild(elemHidden);
+            elemCell.textContent = 0;
+          } else if (index == 4) { // satuan
+            elemCell.textContent = pilih.satuan;
+          } else if (index == 5) { // harga jual
+            elemHidden = setupProductHiddenElem('harga', 0, existingRows+1);
+            elemCell.appendChild(elemHidden);
+            elemCell.textContent = pilih.harga_jual;
+          } else if (index == 6) { // diskon
+            elemHidden = setupProductHiddenElem('diskon', 0, existingRows+1);
+            elemCell.appendChild(elemHidden);
+            elemCell.textContent = '';
+          } else if (index == 7) { // subtotal
+            elemHidden = setupProductHiddenElem('catatan', 0, existingRows+1);
+            elemCell.appendChild(elemHidden);
+            elemCell.textContent = 0;
+          } else if (index == 8) { // actions
+            const elemBtnDeleteRow = document.createElement('button');
+            elemBtnDeleteRow.classList.add('button', 'btn', 'btn-danger');
+            elemCell.appendChild(elemBtnDeleteRow);
+          }
+
+          elemRow.appendChild(elemCell)
+        }
+
+        elemCell.textContent = (existingRows+1).toString() + '.';
+        elemCell.appendChild(elemHidden);
+        elemRow.appendChild(elemCell);
       });
+
+      function setupProductHiddenElem(colName, colValue, rowNum)
+      {
+        const elemHidden = document.createElement('input');
+        let elemName = colName + '[]';
+        elemHidden.setAttribute('type', 'hidden');
+        elemHidden.setAttribute('name', elemName);
+        elemHidden.setAttribute('id', colName+'-'+rowNum.toString());
+        elemHidden.setAttribute('value', colValue);
+
+        return elemHidden;
+      }
       return;
       const invoiceLabel = document.querySelector('#display-kode-invoice');
       let counter = 1;

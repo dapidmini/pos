@@ -12,11 +12,7 @@
   
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
-  {{-- PENTING: MUAT JQUERY DAN JQUERY UI DARI CDN DULU --}}
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  {{-- jQuery UI juga punya CSS, bisa ditambahkan jika Anda menggunakan komponen UI yang membutuhkan style --}}
-  {{-- <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/themes/smoothness/jquery-ui.css"> --}}
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jqueryui@1.13.2/jquery-ui.min.css" integrity="sha256-rbsMuQ7Y6d0jV1eQkF94Rz3lP2zP8P0Jp0O6f9n2Q1k=" crossorigin="anonymous">
 
   {{-- Vite Directive: Ini akan memuat semua CSS dari app.css dan JS dari app.js --}}
   @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -323,8 +319,9 @@
   </div>
   <!-- ./wrapper -->
 
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jqueryui@1.13.2/jquery-ui.min.js" integrity="sha256-lFqL46FjK/i2+l/j6/h6n5tO6dK8D6O5j5x5t7c9c0=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
   @stack('scripts')
 </body>
 
