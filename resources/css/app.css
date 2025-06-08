@@ -22,6 +22,10 @@
   width: 100%;
 }
 
+.table .form-control {
+  min-width: 250px;
+}
+
 .col-min-width {
   width: 1%;
   white-space: nowrap;
