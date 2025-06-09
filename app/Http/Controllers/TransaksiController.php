@@ -29,8 +29,6 @@ class TransaksiController extends Controller
 
     public function store(TransaksiRequest $request)
     {
-        dd($request->all());
-        die();
         $validatedData = $request->validated();
 
         $hitungTotal = 0;
@@ -38,7 +36,7 @@ class TransaksiController extends Controller
         foreach($validatedData['details'] as $detail)
         {
             $count += $detail['jumlah'];
-            $hitungTotal += $detail['subtotal'];
+            $hitungTotal += ($detail['jumlah'] * $detail['harga']);
         }
 
         $diskonGlobal = $validatedData['diskon'] ?? 0;
@@ -79,17 +77,20 @@ class TransaksiController extends Controller
 
             $now = now();
 
-            // insert data utama ke tabel Transaksis
-            $transaksiUtama = Transaksi::create([
+            $prepData = [
                 'user_id' => $user_id,
                 'kode_invoice' => $kodeInvoice,
                 'tanggal' => $validatedData['tanggal'],
                 'nama_customer' => $validatedData['nama_customer'],
                 'meja' => $validatedData['meja'],
-                'keterangan' => $validatedData['keterangan'],
-                'diskon' => $diskonGlobal,
+                'keterangan' => 'abc',
+                'diskon' => $validatedData['diskon'],
+                'total' => $validatedData['total'],
                 'status' => 'pending', 
-            ]);
+            ];
+
+            // insert data utama ke tabel Transaksis
+            $transaksiUtama = Transaksi::create($prepData);
 
             // insert multiple data ke tabel detail transaksi
             $insertDetails = [];
