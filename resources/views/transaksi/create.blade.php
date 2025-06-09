@@ -103,7 +103,7 @@
                     <label for="keterangan">Keterangan</label>
                   </div>
                   <div class="col-sm-9">
-                    <textarea class="form-control" name="keterangan" id="keterangan" rows="3" placeholder="Masukkan Alamat Supplier">{{ old('keterangan') }}</textarea>
+                    <textarea class="form-control" name="keterangan" id="keterangan" rows="3" placeholder="Keterangan Tambahan">{{ old('keterangan') }}</textarea>
                     @error('keterangan')
                       <div class="invalid-feedback">
                         {{ $message }}
@@ -118,15 +118,29 @@
         </div>
         <!-- /.card -->
 
+        <div class="d-flex justify-content-between">
+          <h3>Detail Transaksi</h3>
+          <button type="button" class="btn btn-success btn-sm align-right" id="add-detail-item" data-toggle="modal"
+            data-target="#modalSearchProduct">
+            Tambah Item
+          </button>
+        </div>
+
         <div class="card">
-          <div class="card-header">
-            Detail Transaksi
-            <button type="button" class="btn btn-success btn-sm float-right" id="add-detail-item" data-toggle="modal"
-              data-target="#modalSearchProduct">
-              Tambah Item
-            </button>
+          <div class="card-body">
+            <div class="row detail-row-header">
+              <div class="col-sm-3">Nama Barang</div>
+              <div class="col-sm-1 text-center">Kategori</div>
+              <div class="col-sm-2">Catatan</div>
+              <div class="col-sm-1">Jumlah</div>
+              <div class="col-sm-1">Satuan</div>
+              <div class="col-sm-1">Harga</div>
+              <div class="col-sm-2">Subtotal</div>
+              <div class="col-sm-1">Action</div>
+            </div>
+            <div id="details-container"></div>
           </div>
-          <div class="card-body table-responsive p-0">
+          {{-- <div class="card-body table-responsive p-0">
             <table class="table table-hover text-nowrap" id="details-table">
               <thead>
                 <tr>
@@ -145,17 +159,13 @@
               </tbody>
             </table>
 
-          </div>
+          </div> --}}
         </div>
 
-        <div class="card">
-          <div class="card-body">
-            <div class="text-right">
-              <label class="fw-bold mr-2">Grand Total</label>
-              <br>
-              <h2 name="total">0</h2>
-            </div>
-          </div>
+        <div class="text-right">
+          <label class="fw-bold mr-2">Grand Total</label>
+          <br>
+          <h2 name="total">0</h2>
         </div>
 
         <button type="submit" class="btn btn-primary">

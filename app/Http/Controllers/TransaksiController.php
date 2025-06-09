@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TransaksiRequest;
+use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\TransaksiRequest;
+use App\Models\DetailTransaksi;
 
 class TransaksiController extends Controller
 {
@@ -24,57 +27,112 @@ class TransaksiController extends Controller
         return view('transaksi.create', compact('products'));
     }
 
-    public function store(Request $request)
+    public function store(TransaksiRequest $request)
     {
-        dd($request->input());
-        $requestData = $request->all();
-        $detailsData = [];
+        dd($request->all());
+        die();
+        $validatedData = $request->validated();
 
-        if (isset($requestData['product_id']) && is_array($requestData['product_id'])) {
-            $numDetails = count($requestData['product_id']);
-
-            for ($i=0; $i < $numDetails; $i++) { 
-                // pastikan setiap elemen array yg akan dipakai bisa diakses
-                $productId = $requestData['product_id'][$i] ?? null;
-                $jumlah = $requestData['jumlah'][$i] ?? null;
-                $harga = $requestData['harga'][$i] ?? null;
-                $catatan = $requestData['catatan'][$i] ?? null;
-                $diskonItem = $requestData['diskon'][$i] ?? null;
-
-                $calculatedSubtotal = 0;
-                if (is_numeric($jumlah) && is_numeric($harga)) {
-                    $calculatedSubtotal = ($jumlah * $harga) - $diskonItem;
-                }
-
-                $detailsData[] = [
-                    'product_id' => (int)$productId,
-                    'jumlah' => (int)$jumlah,
-                    'harga' => (int)$harga,
-                    'subtotal' => (int)$calculatedSubtotal,
-                    'catatan' => $catatan,
-                    'diskon' => $diskonItem,
-                ];
-            }
-            // end for
+        $hitungTotal = 0;
+        $count = 0;
+        foreach($validatedData['details'] as $detail)
+        {
+            $count += $detail['jumlah'];
+            $hitungTotal += $detail['subtotal'];
         }
-        // end if (isset($requestData['product_id']) && is_array($requestData['product_id'])) 
 
-        $request->merge(['details' => $detailsData]);
-        $request->merge(['user_id' => 1]);
+        $diskonGlobal = $validatedData['diskon'] ?? 0;
+        $grandTotal = $hitungTotal - $diskonGlobal;
+        if ($grandTotal < 0) { $grandTotal = 0; }
+
+        $validatedData['total'] = $grandTotal;
+        
+        DB::beginTransaction();
 
         try {
-            // validasi variabel data
-            $rules = [
-                // 'user_id' => 'required|integer|exists:users,id',
-                'tanggal' => 'required|date',
-                'nama_customer' => 'required|string|max:255',
-                'meja' => 'required|string|max:20',
-                'diskon' => 'nullable|numeric|min:0',
-                'total' => 'required|numeric|min:0',
-            ];
-            $validatedData = $request->validate($rules);
-        } catch (\Throwable $th) {
-            //throw $th;
+            if ($count < 1) {
+                throw new \Exception("Sebuah transaksi harus memiliki minimal 1 item.");
+            }
+            $user_id = 1; // auth()->id();
+
+            // buat kode invoice
+            $tgl_transaksi = Carbon::parse($validatedData['tanggal']);
+            $ymd = $tgl_transaksi->format('Ymd'); // format YYYYMMDD
+            $transaksi_terakhir = Transaksi::whereDate('tanggal', $tgl_transaksi->toDateString())
+                                            ->lockForUpdate() // mengunci baris untuk memastikan unique
+                                            ->orderBy('id', 'desc')
+                                            ->first();
+
+            $noUrut = 0;
+            if ($transaksi_terakhir) {
+                $noUrut = (int) substr($transaksi_terakhir->kode_invoice, -5); // '00035' -> 35
+            }
+
+            $noUrut++;
+            $strNoUrut  = str_pad($noUrut, 5, '0', STR_PAD_LEFT);
+
+            $kodeInvoice = 'INV' . $ymd . $strNoUrut;
+
+            if (Transaksi::where('kode_invoice', $kodeInvoice)->exists()) {
+                throw new \Exception("Kode invoice '$kodeInvoice' sudah ada. Silakan coba lagi.");
+            }
+
+            $now = now();
+
+            // insert data utama ke tabel Transaksis
+            $transaksiUtama = Transaksi::create([
+                'user_id' => $user_id,
+                'kode_invoice' => $kodeInvoice,
+                'tanggal' => $validatedData['tanggal'],
+                'nama_customer' => $validatedData['nama_customer'],
+                'meja' => $validatedData['meja'],
+                'keterangan' => $validatedData['keterangan'],
+                'diskon' => $diskonGlobal,
+                'status' => 'pending', 
+            ]);
+
+            // insert multiple data ke tabel detail transaksi
+            $insertDetails = [];
+            foreach($validatedData['details'] as $detail) {
+                $insertDetails[] = [
+                    'transaksi_id' => $transaksiUtama->id,
+                    'product_id' => $detail['product_id'],
+                    'jumlah' => $detail['jumlah'],
+                    'harga' => $detail['harga'],
+                    'subtotal' => $detail['subtotal'],
+                    'catatan' => $detail['catatan'],
+                    'diskon' => $detail['diskon'],
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+            }
+
+            DetailTransaksi::insert($insertDetails);
+
+            DB::commit();
+
+            // kalau pake Form Submit biasa, gunakan ini
+            return redirect()->route('transaksis.index')
+                            ->with('success', "Transaksi '$kodeInvoice' berhasil dibuat.");
+            // kalau pakai API dan ajax, gunakan ini
+            // $result = [
+            //     'message' => 'Transaksi berhasil disimpan.',
+            //     'transaksi' => $transaksiUtama->load('details')
+            // ];
+
+            // return response()->json($result, 201); // 201 : HTTP status code yang berarti berhasil melakukan Insert
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            // kalau pake Form Submit biasa, gunakan ini
+            return redirect()->back()
+                            ->withInput()
+                            ->with('error', 'Terjadi kesalahan saat membuat transaksi: ' . $e->getMessage());
+            // kalau pakai API dan ajax, gunakan ini
+            // return response()->json([
+            //     'message' => "Terjadi kesalahan saat memproses transaksi.",
+            //     'error' => config('app.debug') ? $e->getMessage() : 'Server error.'
+            // ], 500);
         }
     }
 }

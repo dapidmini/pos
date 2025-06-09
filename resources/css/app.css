@@ -30,3 +30,16 @@
   width: 1%;
   white-space: nowrap;
 }
+
+.detail-row-header {
+  padding-bottom: 15px;
+  border-bottom: 1px solid darkgrey;
+}
+.detail-row-header > * {
+  text-align: center;
+}
+
+.detail-row {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

@@ -22,11 +22,6 @@ class TransaksiRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'kode_invoice' => [
-                'required',
-                'string',
-                'max:20',
-            ],
             'tanggal' => [
                 'required',
                 'date',
@@ -85,5 +80,42 @@ class TransaksiRequest extends FormRequest
         ];
 
         return $rules;
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $requestData = $this->all();
+        $detailsData = [];
+
+        if (isset($requestData['product_id']) && is_array($requestData['product_id'])) {
+            $numDetails = count($requestData['product_id']);
+
+            for ($i=0; $i < $numDetails; $i++) { 
+                // pastikan setiap elemen array yg akan dipakai bisa diakses
+                $productId = $requestData['product_id'][$i] ?? null;
+                $jumlah = $requestData['jumlah'][$i] ?? null;
+                $harga = $requestData['harga'][$i] ?? null;
+                $catatan = $requestData['catatan'][$i] ?? null;
+                $diskonItem = $requestData['diskon'][$i] ?? null;
+
+                $calculatedSubtotal = 0;
+                if (is_numeric($jumlah) && is_numeric($harga)) {
+                    $calculatedSubtotal = ($jumlah * $harga) - $diskonItem;
+                }
+
+                $detailsData[] = [
+                    'product_id' => (int)$productId,
+                    'jumlah' => (int)$jumlah,
+                    'harga' => (int)$harga,
+                    'subtotal' => (int)$calculatedSubtotal,
+                    'catatan' => $catatan,
+                    'diskon' => $diskonItem,
+                ];
+            }
+            // end for
+        }
+        // end if (isset($requestData['product_id']) && is_array($requestData['product_id'])) 
+
+        $this->merge(['details' => $detailsData]);
     }
 }
