@@ -27,5 +27,6 @@ class TransaksiController extends Controller
     public function store(Request $request)
     {
         dd($request->input());
+        $inputData = $request->input();
     }
 }
