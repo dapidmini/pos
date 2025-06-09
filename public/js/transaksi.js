@@ -75,6 +75,7 @@ $(document).ready(function () {
             } else if (index == 3) {
                 // jumlah
                 elemCell.innerHTML = `
+                <input type="hidden" class="value-stok" value="${pilih.stok}" />
               <button type="button" class="btn btn-sm btn-secondary ml-2 mr-2 btn-minus">
                 <i class="fa-solid fa-minus"></i>
               </button>
@@ -174,12 +175,16 @@ $(document).ready(function () {
         if (targetButton && targetButton.classList.contains("btn")) {
             // --- Logika untuk Tombol Plus (+) ---
             if (targetButton.classList.contains("btn-plus")) {
-                angkaJumlah++;
-                displayJumlah.textContent = angkaJumlah.toLocaleString();
+                let sisaStok = dataRow.querySelector('.value-stok').value;
+                sisaStok = parseInt(sisaStok.replace(/[^0-9]/g, ""));
+                if (angkaJumlah < sisaStok) {
+                    angkaJumlah++;
+                    displayJumlah.textContent = angkaJumlah.toLocaleString();
 
-                let subtotal = hitungSubtotal(dataRow);
-                let elemSubtotal = dataRow.querySelector(".display-subtotal");
-                elemSubtotal.textContent = subtotal.toLocaleString();
+                    let subtotal = hitungSubtotal(dataRow);
+                    let elemSubtotal = dataRow.querySelector(".display-subtotal");
+                    elemSubtotal.textContent = subtotal.toLocaleString();
+                }
             }
             // --- Logika untuk Tombol Minus (-) ---
             else if (targetButton.classList.contains("btn-minus")) {
@@ -187,11 +192,11 @@ $(document).ready(function () {
                     // Jangan sampai kurang dari 0
                     angkaJumlah -= 1;
                     displayJumlah.textContent = angkaJumlah;
-                }
 
-                let subtotal = hitungSubtotal(dataRow);
-                let elemSubtotal = dataRow.querySelector(".display-subtotal");
-                elemSubtotal.textContent = subtotal.toLocaleString();
+                    let subtotal = hitungSubtotal(dataRow);
+                    let elemSubtotal = dataRow.querySelector(".display-subtotal");
+                    elemSubtotal.textContent = subtotal.toLocaleString();
+                }
             }
             // --- Logika untuk Tombol Hapus ---
             else if (targetButton.classList.contains("btn-delete-row")) {
