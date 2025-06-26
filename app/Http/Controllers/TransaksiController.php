@@ -33,18 +33,19 @@ class TransaksiController extends Controller
 
         $hitungTotal = 0;
         $count = 0;
-        foreach($validatedData['details'] as $detail)
-        {
+        foreach ($validatedData['details'] as $detail) {
             $count += $detail['jumlah'];
             $hitungTotal += ($detail['jumlah'] * $detail['harga']);
         }
 
         $diskonGlobal = $validatedData['diskon'] ?? 0;
         $grandTotal = $hitungTotal - $diskonGlobal;
-        if ($grandTotal < 0) { $grandTotal = 0; }
+        if ($grandTotal < 0) {
+            $grandTotal = 0;
+        }
 
         $validatedData['total'] = $grandTotal;
-        
+
         DB::beginTransaction();
 
         try {
@@ -57,9 +58,9 @@ class TransaksiController extends Controller
             $tgl_transaksi = Carbon::parse($validatedData['tanggal']);
             $ymd = $tgl_transaksi->format('Ymd'); // format YYYYMMDD
             $transaksi_terakhir = Transaksi::whereDate('tanggal', $tgl_transaksi->toDateString())
-                                            ->lockForUpdate() // mengunci baris untuk memastikan unique
-                                            ->orderBy('id', 'desc')
-                                            ->first();
+                ->lockForUpdate() // mengunci baris untuk memastikan unique
+                ->orderBy('id', 'desc')
+                ->first();
 
             $noUrut = 0;
             if ($transaksi_terakhir) {
@@ -86,7 +87,7 @@ class TransaksiController extends Controller
                 'keterangan' => 'abc',
                 'diskon' => $validatedData['diskon'],
                 'total' => $validatedData['total'],
-                'status' => 'pending', 
+                'status' => 'pending',
             ];
 
             // insert data utama ke tabel Transaksis
@@ -94,15 +95,15 @@ class TransaksiController extends Controller
 
             // insert multiple data ke tabel detail transaksi
             $insertDetails = [];
-            foreach($validatedData['details'] as $detail) {
+            foreach ($validatedData['details'] as $key => $detail) {
                 $insertDetails[] = [
                     'transaksi_id' => $transaksiUtama->id,
-                    'product_id' => $detail['product_id'],
-                    'jumlah' => $detail['jumlah'],
-                    'harga' => $detail['harga'],
-                    'subtotal' => $detail['subtotal'],
-                    'catatan' => $detail['catatan'],
-                    'diskon' => $detail['diskon'],
+                    'product_id' => $detail['product_id'] ?? null,
+                    'jumlah' => $detail['jumlah'] ?? 0,
+                    'harga' => $detail['harga'] ?? 0,
+                    'subtotal' => $detail['jumlah'] * $detail['harga'],
+                    'catatan' => $detail['catatan'] ?? null,
+                    'diskon' => $detail['diskon'] ?? null,
                     'created_at' => $now,
                     'updated_at' => $now,
                 ];
@@ -114,26 +115,14 @@ class TransaksiController extends Controller
 
             // kalau pake Form Submit biasa, gunakan ini
             return redirect()->route('transaksis.index')
-                            ->with('success', "Transaksi '$kodeInvoice' berhasil dibuat.");
-            // kalau pakai API dan ajax, gunakan ini
-            // $result = [
-            //     'message' => 'Transaksi berhasil disimpan.',
-            //     'transaksi' => $transaksiUtama->load('details')
-            // ];
-
-            // return response()->json($result, 201); // 201 : HTTP status code yang berarti berhasil melakukan Insert
+                ->with('success', "Transaksi '$kodeInvoice' berhasil dibuat.");
         } catch (\Exception $e) {
             DB::rollBack();
 
             // kalau pake Form Submit biasa, gunakan ini
             return redirect()->back()
-                            ->withInput()
-                            ->with('error', 'Terjadi kesalahan saat membuat transaksi: ' . $e->getMessage());
-            // kalau pakai API dan ajax, gunakan ini
-            // return response()->json([
-            //     'message' => "Terjadi kesalahan saat memproses transaksi.",
-            //     'error' => config('app.debug') ? $e->getMessage() : 'Server error.'
-            // ], 500);
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan saat membuat transaksi: ' . $e->getMessage());
         }
     }
 }
