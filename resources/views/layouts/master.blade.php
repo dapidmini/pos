@@ -9,7 +9,7 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
-  
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jqueryui@1.13.2/jquery-ui.min.css" integrity="sha256-rbsMuQ7Y6d0jV1eQkF94Rz3lP2zP8P0Jp0O6f9n2Q1k=" crossorigin="anonymous">
@@ -289,6 +289,23 @@
                 </li>
               </ul>
             </li>
+
+            @if (isset($showFilterProduct) && $showFilterProduct)
+            <li class="nav-item">
+              <form action="">
+                <div class="form-group">
+                  <label for="fKeywordNamaProduk" class="text-secondary font-weight-normal">Nama</label>
+                  <input type="text" class="form-control" id="fKeywordNamaProduk" placeholder="Nama Produk"
+                    name="fKeywordNamaProduk" value="{{ request('fKeywordNamaProduk') }}">
+                </div>
+                <div class="form-group">
+                  <label for="fKeywordNamaSupplier" class="text-secondary font-weight-normal">Nama</label>
+                  <input type="text" class="form-control" id="fKeywordNamaSupplier" placeholder="Nama Supplier"
+                    name="fKeywordNamaSupplier" value="{{ request('fKeywordNamaSupplier') }}">
+                </div>
+              </form>
+            </li>
+            @endif
 
           </ul>
         </nav>
