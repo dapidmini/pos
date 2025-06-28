@@ -95,6 +95,7 @@ class TransaksiController extends Controller
 
             // insert multiple data ke tabel detail transaksi
             $insertDetails = [];
+            $updateProducts = [];
             foreach ($validatedData['details'] as $key => $detail) {
                 $insertDetails[] = [
                     'transaksi_id' => $transaksiUtama->id,
@@ -107,6 +108,19 @@ class TransaksiController extends Controller
                     'created_at' => $now,
                     'updated_at' => $now,
                 ];
+
+                // update stok produk
+                $product = Product::find($detail['product_id']);
+                if ($product) {
+                    $newStok = $product->stok - $detail['jumlah'];
+                    if ($newStok < 0) {
+                        throw new \Exception("Stok produk '{$product->nama}' tidak cukup untuk transaksi ini.");
+                    }
+                    $updateProducts[] = [
+                        'id' => $detail['product_id'],
+                        'stok' => $newStok,
+                    ];
+                }
             }
 
             DetailTransaksi::insert($insertDetails);

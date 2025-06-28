@@ -14,7 +14,7 @@ class ProductController extends Controller
     {
         $data = Product::all();
 
-        return view('product.index', compact('data'))->with('showFilterProduct', true);
+        return view('product.index', compact('data'));
     }
 
     public function create()
