@@ -122,8 +122,41 @@ class TransaksiController extends Controller
                     ];
                 }
             }
+            // end foreach ($validatedData['details'] as $key => $detail) 
 
             DetailTransaksi::insert($insertDetails);
+
+            // update stok produk secara massal
+            // foreach ($updateProducts as $update) {
+            //     Product::where('id', $update['id'])->update(['stok' => $update['stok']]);
+            // }
+            $ids = array_column($updateProducts, 'id'); // ambil semua id produk
+            $caseStatements = []; // untuk menyimpan case statement
+            $params = []; // untuk menyimpan parameter binding
+
+            foreach ($updateProducts as $update) {
+                // buat case statement untuk update stok
+                // ini akan menghasilkan query seperti:
+                // UPDATE products SET stok = CASE id WHEN 1 THEN 10 WHEN 2 THEN 5 END WHERE id IN (1, 2)
+                // yang akan mengupdate stok produk
+                // berdasarkan id produk yang diberikan dan stok baru yang diberikan
+                $caseStatements[] = "WHEN id = ? THEN ?";
+                $params[] = $update['id']; // tambahkan id produk
+                $params[] = $update['stok']; // tambahkan stok baru
+            }
+            // end foreach ($updateProducts as $update)
+
+            // gabungkan semua case statement menjadi satu string
+            $caseString = implode(' ', $caseStatements);
+
+            // update stok produk secara massal
+            DB::update("
+                UPDATE products 
+                SET stok = CASE $caseString
+                    ELSE stok
+                END 
+                WHERE id IN (" . implode(',', $ids) . ")
+            ", array_merge($params, $ids));
 
             DB::commit();
 
