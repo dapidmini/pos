@@ -43,3 +43,7 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
+
+.nav-item .form-control {
+  width: 90% !important;
+}

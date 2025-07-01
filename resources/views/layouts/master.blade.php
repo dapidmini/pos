@@ -195,7 +195,7 @@
         </div>
 
         <!-- SidebarSearch Form -->
-        {{-- <div class="form-inline">
+        <div class="form-inline">
           <div class="input-group" data-widget="sidebar-search">
             <input class="form-control form-control-sidebar" type="search" placeholder="Search"
               aria-label="Search">
@@ -205,7 +205,7 @@
               </button>
             </div>
           </div>
-        </div> --}}
+        </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -254,8 +254,8 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
+            <li class="nav-item {{ request()->routeIs('categories.*', 'products.*', 'suppliers.*') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link {{ request()->routeIs('categories.*', 'products.*', 'suppliers.*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-table"></i>
                 <p>
                   Master Data
@@ -264,19 +264,19 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ route('categories.index') }}" class="nav-link">
+                  <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories.index') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Kategori</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('products.index') }}" class="nav-link">
+                  <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.index') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Barang</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('suppliers.index') }}" class="nav-link">
+                  <a href="{{ route('suppliers.index') }}" class="nav-link {{ request()->routeIs('suppliers.index') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Supplier</p>
                   </a>
@@ -290,8 +290,31 @@
               </ul>
             </li>
 
-            @if (request()->routeIs('products.index'))
-            @include('components.filter-product')
+            @if (request()->routeIs('products.index') || request()->routeIs('suppliers.index'))
+            <li class="nav-item">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-filter"></i>
+                <p>
+                  Filter
+                  <i class="fas fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <form action="">
+                    @if (request()->routeIs('products.index'))
+                    @include('components.filter-product')
+                    @endif
+                    @if (request()->routeIs('suppliers.index'))
+                    @include('components.filter-supplier')
+                    @endif
+                    <div class="text-center pr-4">
+                      <button type="submit" class="btn btn-primary btn-block">Cari</button>
+                    </div>
+                  </form>
+                </li>
+              </ul>
+            </li>
             @endif
 
           </ul>
