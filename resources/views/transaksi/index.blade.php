@@ -4,17 +4,21 @@
 
 @section('content')
 <div class="container-fluid">
-  <div class="d-flex justify-content-start align-items-center">
-    <h1 class="mr-3">Daftar Transaksi</h1>
-    <a href="{{ route('transaksis.create') }}" class="btn btn-primary">Buat Baru</a>
+  <div class="d-flex justify-content-start align-items-center mb-3 mt-2">
+    <div class="d-flex align-items-center">
+      <h2 class="mr-3">Daftar Penjualan</h2>
+      <a href="{{ route('transaksis.create') }}" class="btn btn-primary">Buat Baru</a>
+    </div>
 
-    <div class="input-group input-group-sm" style="width: 150px; margin-left: auto">
-      <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+    <div class="ml-auto">
+      <div class="input-group input-group-sm" style="width: 150px; margin-left: auto">
+        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
 
-      <div class="input-group-append">
-        <button type="submit" class="btn btn-default">
-          <i class="fas fa-search"></i>
-        </button>
+        <div class="input-group-append">
+          <button type="submit" class="btn btn-default">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
       </div>
     </div>
 
