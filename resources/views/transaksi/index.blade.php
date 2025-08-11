@@ -47,7 +47,9 @@
               <tr>
                 <td>{{ $row->tanggal->format('l, d M Y H:i') }}</td>
                 <td>{{ $row->kode_invoice }}</td>
-                <td>{{ $row->nama_customer }}</td>
+                <td>
+                  <a href="#" data-toggle="modal" data-target="#customerModal" data-customer-id="{{ $row->nama_customer }}">{{ $row->nama_customer }}</a>
+                </td>
                 <td>{{ number_format($row->total, 0, ',', '.') }}</td>
                 <td class="text-center">
                   <a href="{{ route('transaksis.edit', $row->id) }}" class="btn btn-sm btn-info mr-2">Edit</a>
@@ -70,6 +72,25 @@
     <!-- /.col-12 -->
   </div>
   <!-- /.row -->
+
+  <!-- Modal Bootstrap -->
+  <div class="modal fade" id="customerModal" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="customerModalLabel">Detail Customer</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Konten nama customer akan diisi lewat JavaScript -->
+          <p id="modalCustomerName"></p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="row">
     <div class="col-12">
