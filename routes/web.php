@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransaksiController;
 
@@ -16,6 +17,8 @@ Route::get('/', function () {
 // Route::get('/categories/edit', [CategoryController::class, 'edit'])->name('category.edit');
 // Route::get('/categories/destroy', [CategoryController::class, 'destroy'])->name('category.destroy');
 Route::resource('categories', CategoryController::class)->except(['show']);
+
+Route::resource('customers', CustomerController::class);
 
 Route::resource('products', ProductController::class);
 Route::resource('suppliers', SupplierController::class);
