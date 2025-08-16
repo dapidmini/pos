@@ -12,9 +12,40 @@ use App\Models\DetailTransaksi;
 
 class TransaksiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $data = Transaksi::with('user')->latest()->paginate(10);
+        $filterBy = $request->input('filterBy');
+        $filterKeyword = $request->input('filterKeyword');
+
+        $query = Transaksi::with(['details.product']);
+
+        // Filter sesuai pilihan
+        switch ($filterBy) {
+            case 'customer':
+                if ($filterKeyword) {
+                    $query->where('nama_customer', 'like', "%{$filterKeyword}%");
+                }
+                break;
+
+            case 'produk':
+                if ($filterKeyword) {
+                    $query->whereHas('details.product', function ($q) use ($filterKeyword) {
+                        $q->where('nama', 'like', "%{$filterKeyword}%");
+                    });
+                }
+                break;
+
+            case 'catatan':
+                if ($filterKeyword) {
+                    $query->where('keterangan', 'like', "%{$filterKeyword}%");
+                }
+                break;
+        }
+
+        $query->orderBy('created_at', 'desc');
+
+        // Gunakan pagination
+        $data = $query->paginate(10)->appends($request->all());
 
         if (request()->ajax()) {
             return response()->view('transaksi.index-data-container', compact('data'));

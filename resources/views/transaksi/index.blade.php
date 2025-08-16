@@ -4,21 +4,29 @@
 
 @section('content')
 <div class="container-fluid">
-  <div class="d-flex justify-content-start align-items-center mb-3 mt-2">
-    <div class="d-flex align-items-center">
-      <h2 class="mr-3">Daftar Penjualan</h2>
-      <button type="button" id="btnRefreshTransaksi" class="btn btn-outline-success mr-2">Refresh</button>
-      <a href="{{ route('transaksis.create') }}" class="btn btn-primary">Buat Baru</a>
+  <!-- <div class="d-flex justify-content-start align-items-center mb-3 mt-2"> -->
+  <div class="row align-items-center">
+    <div class="col-lg-6 mb-1 mt-1">
+      <div class="d-flex align-items-center">
+        <h2 class="mr-3">Daftar Penjualan</h2>
+        <button type="button" id="btnRefreshTransaksi" class="btn btn-outline-success mr-2">Refresh</button>
+        <a href="{{ route('transaksis.create') }}" class="btn btn-primary">Buat Baru</a>
+      </div>
     </div>
 
-    <div class="ml-auto">
-      <div class="input-group input-group-sm" style="width: 150px; margin-left: auto">
-        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+    <div class="col-lg-6 mb-1 mt-1">
+      <div class="row">
+        <div class="col-12 my-input-group text-right text-lg-right">
+          <select id="filterBy" class="form-control-sm mr-2">
+            <option value="customer">Nama Customer</option>
+            <option value="produk">Nama Produk</option>
+            <option value="catatan">Catatan Transaksi</option>
+          </select>
 
-        <div class="input-group-append">
-          <button type="submit" class="btn btn-default">
-            <i class="fas fa-search"></i>
-          </button>
+          <input type="text" id="filterKeyword" class="form-control-sm mr-2" placeholder="Masukkan kata kunci...">
+
+          <button id="btnFilter" class="btn btn-outline-primary btn-sm">Filter</button>
+
         </div>
       </div>
     </div>
