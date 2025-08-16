@@ -16,6 +16,10 @@ class TransaksiController extends Controller
     {
         $data = Transaksi::with('user')->latest()->paginate(10);
 
+        if (request()->ajax()) {
+            return response()->view('transaksi.index-data-container', compact('data'));
+        }
+
         return view('transaksi.index', compact('data'));
     }
 
