@@ -22,12 +22,11 @@
             </td>
             <td>{{ number_format($row->total, 0, ',', '.') }}</td>
             <td class="text-center">
-              <a href="{{ route('transaksis.edit', $row->id) }}" class="btn btn-sm btn-info mr-2">Edit</a>
               <form action="{{ route('transaksis.destroy', $row->id) }}" method="POST" style="display:inline;">
                 @csrf {{-- Laravel CSRF protection --}}
                 @method('DELETE') {{-- Method spoofing untuk DELETE request --}}
                 <button type="submit" class="btn btn-sm btn-outline-danger"
-                  onclick="return confirm('Apakah Anda yakin ingin menghapus barang ini?');">Delete</button>
+                  onclick="return confirm('Apakah Anda yakin ingin menghapus transaksi ini?');">Delete</button>
               </form>
             </td>
           </tr>

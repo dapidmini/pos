@@ -62,6 +62,14 @@ class TransaksiController extends Controller
         return view('transaksi.create', compact('products'));
     }
 
+    public function edit($id)
+    {
+        $transaksi = Transaksi::with(['details.product'])->findOrFail($id);
+        $products = Product::all();
+
+        return view('transaksi.edit', compact('transaksi', 'products'));
+    }
+
     public function store(TransaksiRequest $request)
     {
         $validatedData = $request->validated();
@@ -212,7 +220,7 @@ class TransaksiController extends Controller
     {
         $transaksi = Transaksi::with('details')->findOrFail($id);
         $transaksi->load(['details.product']);
-        dd($transaksi, $transaksi->details);
+
         return view('transaksi.show', compact('transaksi'));
     }
 }

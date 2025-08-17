@@ -15,16 +15,8 @@
     <div class="col-lg-6 mb-1 mt-1">
       <div class="row">
         <div class="col-12 my-input-group text-right text-lg-right">
-          <select id="filterBy" class="form-control-sm mr-2">
-            <option value="customer">Nama Customer</option>
-            <option value="produk">Nama Produk</option>
-            <option value="catatan">Catatan Transaksi</option>
-          </select>
-
-          <input type="text" id="filterKeyword" class="form-control-sm mr-2" placeholder="Masukkan kata kunci...">
-
+          <input type="text" id="filterKeyword" class="form-control-sm mr-2" placeholder="Masukkan nama produk...">
           <button id="btnFilter" class="btn btn-outline-primary btn-sm">Filter</button>
-
         </div>
       </div>
     </div>
@@ -35,7 +27,7 @@
   <p>No data</p>
   @else
   <div class="card" id="transaksiContainer">
-    @include('transaksi.index-data-container')
+    <p>Daftar produk:</p>
   </div>
   <!-- /.card -->
 
