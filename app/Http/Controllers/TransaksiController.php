@@ -207,4 +207,12 @@ class TransaksiController extends Controller
                 ->with('error', 'Terjadi kesalahan saat membuat transaksi: ' . $e->getMessage());
         }
     }
+
+    public function show($id)
+    {
+        $transaksi = Transaksi::with('details')->findOrFail($id);
+        $transaksi->load(['details.product']);
+        dd($transaksi, $transaksi->details);
+        return view('transaksi.show', compact('transaksi'));
+    }
 }

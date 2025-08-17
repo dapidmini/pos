@@ -14,7 +14,9 @@
           @foreach ($data as $i => $row)
           <tr>
             <td>{{ $row->tanggal->format('l, d M Y H:i') }}</td>
-            <td>{{ $row->kode_invoice }}</td>
+            <td>
+              <a href="{{ route('transaksis.show', $row->id) }}">{{ $row->kode_invoice }}</a>
+            </td>
             <td>
               <a href="#" data-toggle="modal" data-target="#customerModal" data-customer-id="{{ $row->nama_customer }}">{{ $row->nama_customer }}</a>
             </td>
