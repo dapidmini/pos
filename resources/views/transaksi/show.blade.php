@@ -17,8 +17,8 @@
         </ol>
         <div class="row w-100 justify-content-end">
           <div class="col-12 my-input-group text-right text-lg-right">
-            <input type="text" id="filterKeyword" class="form-control-sm mr-2" placeholder="Masukkan nama produk...">
-            <button id="btnFilter" class="btn btn-outline-primary btn-sm">Filter</button>
+            <input type="text" id="filterKeyword" class="form-control-sm mr-2" autofocus placeholder="Masukkan nama produk...">
+            <button id="btnFilterListProduk" class="btn btn-outline-primary btn-sm">Filter</button>
           </div>
         </div>
       </div>
@@ -27,12 +27,14 @@
 </section>
 
 <div class="container-fluid">
-  <div class="row">
+  <div class="row mb-3">
     <div class="col-4">
-      <div>Tanggal Transaksi: {{ $transaksi->tanggal->format('d F Y, H:i') }}</div>
-      <div>Nama Customer: {{ $transaksi->nama_customer }}</div>
-      <div>Meja: {{ $transaksi->meja }}</div>
-      <div>Total: Rp{{ number_format($transaksi->total, 0, ',', '.') }}</div>
+      <div class="border-right pr-3">
+        <div>Tanggal Transaksi: {{ $transaksi->tanggal->format('d F Y, H:i') }}</div>
+        <div>Nama Customer: {{ $transaksi->nama_customer }}</div>
+        <div>Meja: {{ $transaksi->meja }}</div>
+        <h5 class="font-weight-bold">Total: Rp{{ number_format($transaksi->total, 0, ',', '.') }}</h5>
+      </div>
     </div>
     <div class="col-8">
       <div>keterangan: {{ $transaksi->keterangan }}</div>
@@ -40,12 +42,12 @@
   </div>
 
   @if ($transaksi->details->isEmpty())
-  <p>No data</p>
+  <p>Data produk tidak ditemukan.</p>
   @else
   <div class="card" id="transaksiContainer">
-
+    @include('transaksi.show-data-content')
   </div>
-  <!-- /.card -->
+  <!-- /.card#transaksiContainer -->
 
   <!-- Modal Bootstrap untuk menampilkan detail produk -->
   <div class="modal fade" id="detailProdukModal" tabindex="-1" aria-labelledby="detailProdukModalLabel" aria-hidden="true">

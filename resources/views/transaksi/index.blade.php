@@ -37,7 +37,7 @@
   <p>No data</p>
   @else
   <div class="card" id="transaksiContainer">
-    @include('transaksi.index-data-container')
+    @include('transaksi.index-data-content')
   </div>
   <!-- /.card -->
 
