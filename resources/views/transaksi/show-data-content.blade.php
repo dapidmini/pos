@@ -11,7 +11,9 @@
   <tbody>
     @foreach($transaksi->details as $detail)
     <tr class="rowProduk">
-      <td class="product-name">{{ $detail->product->nama }}</td>
+      <td class="product-name">
+        <a href="{{ route('products.show', $detail->product->id) }}">{{ $detail->product->nama }}</a>
+      </td>
       <td class="text-right col-min-width">{{ $detail->product->stok }}</td>
       <td class="text-center col-min-width">{{ $detail->product->satuan }}</td>
       <td class="text-right col-min-width">{{ number_format($detail->product->harga_beli, 0, ',', '.') }}</td>

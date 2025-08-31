@@ -25,6 +25,10 @@ class SupplierController extends Controller
         return view('supplier.edit', compact('supplier'));
     }
 
+    public function show(Supplier $supplier)
+    {
+        return view('supplier.show', compact('supplier'));
+    }
     public function store(SupplierRequest $request)
     {
         Supplier::create($request->validated());

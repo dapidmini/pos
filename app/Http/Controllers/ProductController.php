@@ -33,6 +33,13 @@ class ProductController extends Controller
         return view('product.edit', compact('product', 'categories', 'suppliers'));
     }
 
+    public function show(Product $product)
+    {
+        $product = Product::with(['category', 'supplier'])->find($product->id);
+        // return response()->json($product);
+        return view('product.show', compact('product'));
+    }
+
     public function store(ProductRequest $request)
     {
         Product::create($request->validated());
