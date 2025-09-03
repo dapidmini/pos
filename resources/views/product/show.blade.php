@@ -19,6 +19,12 @@
     </div>
 
     @if ($product)
+    <div class="d-flex justify-content-start align-items-center mb-5">
+      <div class="product-img mr-3"><img src="https://picsum.photos/300" alt="{{ $product->nama }}" style="width: 300px;"></div>
+      <div class="product-qr-code">
+        {!! QrCode::size(200)->generate($product->kode_barang) !!}
+      </div>
+    </div>
     <div class="row">
       <div class="col-sm-2 d-flex justify-content-between">
         <strong style="white-space: nowrap;">Nama Produk</strong><span class="text-right">:</span>
@@ -65,7 +71,7 @@
         </div>
       </div>
       <!-- <p>&nbsp;</p> -->
-       
+
       <div class="mb-3 col-12">
         <div class="row">
           <div class="col-sm-2 d-flex justify-content-between">
