@@ -21,5 +21,8 @@ Route::resource('categories', CategoryController::class)->except(['show']);
 Route::resource('customers', CustomerController::class);
 
 Route::resource('products', ProductController::class);
+Route::post('/products/upload-temp', [ProductController::class, 'uploadTemp'])->name('products.upload.temp');
+Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
+
 Route::resource('suppliers', SupplierController::class);
 Route::resource('transaksis', TransaksiController::class);

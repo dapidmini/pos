@@ -54,7 +54,9 @@
                       <td>Rp {{ number_format($row->harga_beli, 0, ',', '.') }}</td>
                       <td>Rp {{ number_format($row->harga_jual, 0, ',', '.') }}</td>
                       <td class="text-center">
-                        <a href="{{ route('products.edit', $row->id) }}" class="btn btn-sm btn-info mr-2">Edit</a>
+                        <a href="{{ route('products.edit', $row->id) }}" class="btn btn-sm btn-info mr-2">
+                          <i class="fa fa-pencil pr-2"></i>Edit
+                        </a>
                         <form action="{{ route('products.destroy', $row->id) }}" method="POST" style="display:inline;">
                           @csrf {{-- Laravel CSRF protection --}}
                           @method('DELETE') {{-- Method spoofing untuk DELETE request --}}
