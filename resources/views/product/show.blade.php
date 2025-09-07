@@ -144,7 +144,3 @@
   </div><!-- /.container-fluid -->
 </section>
 @endsection
-
-@push('scripts')
-<script src="{{ asset('js/product-detail.js') }}"></script>
-@endpush
