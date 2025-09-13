@@ -155,6 +155,8 @@
                     <span>Letakkan foto produk di sini<br>atau klik untuk mengunggah.</span>
                   </div>
                 </div>
+
+                <div id="tempFilesProductGallery"></div>
               </div>
 
               <div class="d-flex flex-wrap" id="listGalleryContainer">
@@ -187,5 +189,6 @@
 @endpush
 
 @push('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.js"></script>
 <script src="{{ asset('js/product.js') }}"></script>
 @endpush

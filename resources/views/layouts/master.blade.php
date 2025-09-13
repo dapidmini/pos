@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>POS @yield('title')</title>
 
   <link rel="stylesheet"
@@ -352,9 +353,24 @@
   </div>
   <!-- ./wrapper -->
 
+  <div aria-live="polite" aria-atomic="true" style="position: fixed; top: 1rem; right: 1rem; z-index: 1080;">
+    <div id="appToast" class="toast" data-delay="4000">
+      <div class="toast-header">
+        <strong class="mr-auto" id="toastTitle">Info</strong>
+        <small class="text-muted">just now</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast">&times;</button>
+      </div>
+      <div class="toast-body" id="toastBody">
+        <!-- Isi pesan baru akan ditulis lewat JS -->
+      </div>
+    </div>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jqueryui@1.13.2/jquery-ui.min.js" integrity="sha256-lFqL46FjK/i2+l/j6/h6n5tO6dK8D6O5j5x5t7c9c0=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+  <script src="{{ asset('js/my-utils.js') }}"></script>
+
   @stack('scripts')
 </body>
 
