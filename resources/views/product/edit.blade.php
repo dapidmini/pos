@@ -150,7 +150,10 @@
             <div class="card-body">
               <div class="form-group">
                 <label for="myDropzone">Foto Produk</label>
-                <div class="dropzone" id="myDropzone" data-url="{{ route('products.upload.temp') }}">
+                <div class="dropzone" id="myDropzone" 
+                data-url="{{ route('products.upload.temp') }}"
+                data-temp-container="tempFilesProductGallery"
+                data-module-name="Foto Gallery Produk">
                   <div class="dz-message" data-dz-message>
                     <span>Letakkan foto produk di sini<br>atau klik untuk mengunggah.</span>
                   </div>
@@ -159,13 +162,13 @@
                 <div id="tempFilesProductGallery"></div>
               </div>
 
-              <div class="d-flex flex-wrap" id="listGalleryContainer">
-                <div class="col-3 square-box" style="border:1px dashed #000;"></div>
-                <div class="col-3 square-box" style="border:1px dashed #000;"></div>
-                <div class="col-3 square-box" style="border:1px dashed #000;"></div>
-                <div class="col-3 square-box" style="border:1px dashed #000;"></div>
-                <div class="col-3 square-box" style="border:1px dashed #000;"></div>
-              </div>
+              <!-- <div class="d-flex justify-content-between flex-wrap" id="listGalleryContainer">
+                <div class="col-2 square-box" style="border:1px dashed #000;"></div>
+                <div class="col-2 square-box" style="border:1px dashed #000;"></div>
+                <div class="col-2 square-box" style="border:1px dashed #000;"></div>
+                <div class="col-2 square-box" style="border:1px dashed #000;"></div>
+                <div class="col-2 square-box" style="border:1px dashed #000;"></div>
+              </div> -->
 
             </div>
           </div>

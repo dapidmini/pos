@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\ProductRequest;
 
 class ProductController extends Controller
@@ -49,9 +50,39 @@ class ProductController extends Controller
 
     public function update(ProductRequest $request, Product $product)
     {
+        // Update data produk utama
         $product->update($request->validated());
 
-        return redirect()->route('products.index')->with('success', 'Barang berhasil diperbarui!');
+        // Proses file yang diupload via Dropzone (jika ada)
+        if ($request->has('tempFilesProductGallery')) {
+            foreach ($request->tempFilesProductGallery as $tempFile) {
+                $tempPath = storage_path("app/temp/{$tempFile}");
+
+                if (file_exists($tempPath)) {
+                    $destinationPath = storage_path("app/public/products");
+
+                    // buat folder jika belum ada
+                    if (!file_exists($destinationPath)) {
+                        mkdir($destinationPath, 0777, true);
+                    }
+
+                    // pindahkan file dari temp ke folder permanen
+                    rename($tempPath, $destinationPath . '/' . $tempFile);
+
+                    // Simpan ke tabel product_images (opsional, lebih rapi)
+                    DB::table('product_images')->insert([
+                        'product_id' => $product->id,
+                        'file_name'  => $tempFile,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+            }
+        }
+
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Barang berhasil diperbarui!');
     }
 
     public function destroy(Product $product)
@@ -59,6 +90,25 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('products.index')->with('success', 'Barang berhasil dihapus!');
+    }
+
+    public function uploadTemp(Request $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+
+            // buat nama unik
+            $filename = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // simpan dulu ke folder sementara
+            $file->move(storage_path('app/temp'), $filename);
+
+            return response()->json([
+                'file_name' => $filename,
+            ]);
+        }
+
+        return response()->json(['error' => 'No file uploaded'], 400);
     }
 
     public function uploadFile(Request $request, $id)

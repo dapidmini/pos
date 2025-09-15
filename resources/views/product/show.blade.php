@@ -110,8 +110,12 @@
 
           <div class="modal-body">
             <div id="carouselProductGallery" class="carousel slide" data-ride="carousel">
+              <ol class="carousel-indicators bulat">
+                <li data-target="#carouselProductGallery" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselProductGallery" data-slide-to="1"></li>
+                <li data-target="#carouselProductGallery" data-slide-to="2"></li>
+              </ol>
               <div class="carousel-inner">
-
                 <div class="carousel-item active">
                   <img src="https://picsum.photos/1200/800" class="d-block mx-auto img-carousel" alt="Product 1">
                 </div>
@@ -121,7 +125,6 @@
                 <div class="carousel-item">
                   <img src="https://picsum.photos/1920/1080" class="d-block mx-auto img-carousel" alt="Product 3">
                 </div>
-
               </div>
               <a class="carousel-control-prev" href="#carouselProductGallery" role="button" data-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
