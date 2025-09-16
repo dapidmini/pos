@@ -151,7 +151,7 @@
               <div class="form-group">
                 <label for="myDropzone">Foto Produk</label>
                 <div class="dropzone" id="myDropzone" 
-                data-url="{{ route('products.upload.temp') }}"
+                data-url="{{ route('gallery.upload.temp') }}"
                 data-temp-container="tempFilesProductGallery"
                 data-module-name="Foto Gallery Produk">
                   <div class="dz-message" data-dz-message>
@@ -161,15 +161,6 @@
 
                 <div id="tempFilesProductGallery"></div>
               </div>
-
-              <!-- <div class="d-flex justify-content-between flex-wrap" id="listGalleryContainer">
-                <div class="col-2 square-box" style="border:1px dashed #000;"></div>
-                <div class="col-2 square-box" style="border:1px dashed #000;"></div>
-                <div class="col-2 square-box" style="border:1px dashed #000;"></div>
-                <div class="col-2 square-box" style="border:1px dashed #000;"></div>
-                <div class="col-2 square-box" style="border:1px dashed #000;"></div>
-              </div> -->
-
             </div>
           </div>
           <!-- /.card secondary -->

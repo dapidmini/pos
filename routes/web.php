@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
@@ -26,3 +27,6 @@ Route::put('/products/{id}', [ProductController::class, 'update'])->name('produc
 
 Route::resource('suppliers', SupplierController::class);
 Route::resource('transaksis', TransaksiController::class);
+
+Route::post('/gallery/upload/temp', [GalleryController::class, 'uploadTemp'])->name('gallery.upload.temp');
+Route::post('/gallery/upload/temp/delete', [GalleryController::class, 'deleteTemp'])->name('gallery.upload.temp.delete');

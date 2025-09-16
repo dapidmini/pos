@@ -74,4 +74,9 @@ class Product extends Model
         // Mengubah nilai menjadi huruf kapital
         $this->attributes['satuan'] = Str::upper(trim($value));
     }
+
+    public function galleryImages()
+    {
+        return $this->morphMany(GalleryImage::class, 'imageable');
+    }
 }

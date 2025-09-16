@@ -54,7 +54,7 @@ class ProductController extends Controller
         $product->update($request->validated());
 
         // Proses file yang diupload via Dropzone (jika ada)
-        if ($request->has('tempFilesProductGallery')) {
+        if ($request->filled('tempFilesProductGallery')) {
             foreach ($request->tempFilesProductGallery as $tempFile) {
                 $tempPath = storage_path("app/temp/{$tempFile}");
 

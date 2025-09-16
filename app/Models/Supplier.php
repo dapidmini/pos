@@ -15,4 +15,9 @@ class Supplier extends Model
     {
         return $this->hasMany(Product::class, 'id_supplier');
     }
+
+    public function galleryImages()
+    {
+        return $this->morphMany(GalleryImage::class, 'imageable');
+    }
 }
