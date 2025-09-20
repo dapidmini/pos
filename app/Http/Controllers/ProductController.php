@@ -59,22 +59,24 @@ class ProductController extends Controller
                 $tempPath = storage_path("app/temp/{$tempFile}");
 
                 if (file_exists($tempPath)) {
-                    $destinationPath = storage_path("app/public/products");
+                    $destinationPath = public_path("uploads/products/{$product->id}");
 
                     // buat folder jika belum ada
                     if (!file_exists($destinationPath)) {
-                        mkdir($destinationPath, 0777, true);
+                        mkdir($destinationPath, 0755, true);
                     }
 
+                    // nama file final
+                    $finalFilePath = $destinationPath . '/' . $tempFile;
                     // pindahkan file dari temp ke folder permanen
-                    rename($tempPath, $destinationPath . '/' . $tempFile);
+                    rename($tempPath, $finalFilePath);
 
                     // Simpan ke tabel product_images (opsional, lebih rapi)
-                    DB::table('product_images')->insert([
-                        'product_id' => $product->id,
-                        'file_name'  => $tempFile,
-                        'created_at' => now(),
-                        'updated_at' => now(),
+                    \App\Models\GalleryImage::create([
+                        'imageable_type' => Product::class,
+                        'imageable_id' => $product->id,
+                        'file_path' => "uploads/products/{$product->id}/{$tempFile}",
+                        'original_name' => $tempFile,
                     ]);
                 }
             }

@@ -215,7 +215,7 @@
             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
 
-            <li class="nav-item">
+            <li class="nav-item {{ request()->routeIs('transaksis.*') ? 'menu-open' : '' }}">
               <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-copy"></i>
                 <p>
@@ -224,8 +224,8 @@
                 </p>
               </a>
               <ul class="nav nav-treeview">
-                <li class="nav-item">
-                  <a href="{{ route('transaksis.index') }}" class="nav-link">
+                <li class="nav-item {{ request()->routeIs('transaksis.*') ? 'menu-open' : '' }}">
+                  <a href="{{ route('transaksis.index') }}" class="nav-link {{ request()->routeIs('transaksis.*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Penjualan</p>
                   </a>
@@ -238,8 +238,8 @@
                 </li>
               </ul>
             </li>
-            <li class="nav-item">
-              <a href="#" class="nav-link">
+            <li class="nav-item {{ request()->routeIs('lapLabaRugi.*') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link ">
                 <i class="nav-icon fas fa-chart-pie"></i>
                 <p>
                   Laporan
@@ -248,7 +248,7 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="pages/charts/chartjs.html" class="nav-link">
+                  <a href="pages/charts/chartjs.html" class="nav-link {{ request()->routeIs('lapLabaRugi.*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Laba-Rugi</p>
                   </a>
@@ -265,31 +265,31 @@
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ route('customers.index') }}" class="nav-link {{ request()->routeIs('customers.index') ? 'active' : '' }}">
+                  <a href="{{ route('customers.index') }}" class="nav-link {{ request()->routeIs('customers*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Customer</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories.index') ? 'active' : '' }}">
+                  <a href="{{ route('categories.index') }}" class="nav-link {{ request()->routeIs('categories*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Kategori</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products.index') ? 'active' : '' }}">
+                  <a href="{{ route('products.index') }}" class="nav-link {{ request()->routeIs('products*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Barang</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('suppliers.index') }}" class="nav-link {{ request()->routeIs('suppliers.index') ? 'active' : '' }}">
+                  <a href="{{ route('suppliers.index') }}" class="nav-link {{ request()->routeIs('suppliers*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>Supplier</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="#" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
                     <i class="far fa-circle nav-icon"></i>
                     <p>User</p>
                   </a>
