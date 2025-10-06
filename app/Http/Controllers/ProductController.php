@@ -43,7 +43,23 @@ class ProductController extends Controller
 
     public function store(ProductRequest $request)
     {
-        Product::create($request->validated());
+        $validated = $request->validate([
+            'nama' => 'required|string|max:255',
+            'stok' => 'required|integer|min:0',
+            'harga_beli' => 'required|numeric|min:0',
+            'harga_jual' => 'required|numeric|min:0',
+            'status' => 'required|in:active,inactive',
+            'id_kategori' => 'required|exists:categories,id',
+            'id_supplier' => 'nullable|exists:suppliers,id',
+            'temp_files' => 'nullable|array', // array of temp file names
+        ]);
+
+        $product = Product::create($validated);
+
+        // ✅ Pindahkan file temp ke gallery final
+        if (!empty($validated['temp_files'])) {
+            GalleryController::moveFromTempToGallery($validated['temp_files'], $product);
+        }
 
         return redirect()->route('products.index')->with('success', 'Barang berhasil ditambahkan!');
     }

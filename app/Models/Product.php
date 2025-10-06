@@ -39,15 +39,15 @@ class Product extends Model
 
             // generate kode unik yg baru
             $kodeBaru = 'K' . str_pad($product->id_kategori, 5, '0', STR_PAD_LEFT)
-                        . '-' 
-                        . 'I' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
+                . '-'
+                . 'I' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
 
             // pastikan kode barang ini unik
             while (Product::where('kode_barang', $kodeBaru)->exists()) {
                 $nextNumber++;
                 $kodeBaru = 'K' . str_pad($product->id_kategori, 5, '0', STR_PAD_LEFT)
-                            . '-' 
-                            . 'I' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
+                    . '-'
+                    . 'I' . str_pad($nextNumber, 6, '0', STR_PAD_LEFT);
             }
 
             $product->kode_barang = $kodeBaru;
@@ -78,5 +78,14 @@ class Product extends Model
     public function galleryImages()
     {
         return $this->morphMany(GalleryImage::class, 'imageable');
+    }
+
+    public function getMainImageUrlAttribute()
+    {
+        if ($this->galleryImages->isNotEmpty()) {
+            return $this->galleryImages->first()->url;
+        }
+        
+        return asset('storage/images/placeholder.png');
     }
 }

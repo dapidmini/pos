@@ -13,4 +13,12 @@ class GalleryImage extends Model
     {
         return $this->morphTo();
     }
+
+    public function getUrlAttribute()
+    {
+        if ($this->file_path && file_exists(public_path('storage/' . $this->file_path))) {
+            return asset('storage/' . $this->file_path);
+        }
+        return asset('images/placeholder.png');
+    }
 }
