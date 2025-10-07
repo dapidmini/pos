@@ -8,10 +8,13 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransaksiController;
 
-Route::get('/', function () {
+use App\Services\TempCleaner;
+
+
+Route::get('/', function (TempCleaner $cleanup) {
+    $cleanup->run();
     return view('welcome');
 });
-
 // Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
 // Route::get('/categories/create', [CategoryController::class, 'create'])->name('category.create');
 // Route::post('/categories/store', [CategoryController::class, 'store'])->name('category.store');

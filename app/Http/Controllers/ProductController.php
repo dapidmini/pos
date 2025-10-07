@@ -51,14 +51,14 @@ class ProductController extends Controller
             'status' => 'required|in:active,inactive',
             'id_kategori' => 'required|exists:categories,id',
             'id_supplier' => 'nullable|exists:suppliers,id',
-            'temp_files' => 'nullable|array', // array of temp file names
+            'uploaded_files' => 'nullable|string', // array of temp file names uploaded via Dropzone
         ]);
 
         $product = Product::create($validated);
 
         // ✅ Pindahkan file temp ke gallery final
-        if (!empty($validated['temp_files'])) {
-            GalleryController::moveFromTempToGallery($validated['temp_files'], $product);
+        if (!empty($validated['uploaded_files'])) {
+            GalleryController::moveFromTempToGallery($validated['uploaded_files'], $product);
         }
 
         return redirect()->route('products.index')->with('success', 'Barang berhasil ditambahkan!');

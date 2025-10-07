@@ -82,10 +82,11 @@ class Product extends Model
 
     public function getMainImageUrlAttribute()
     {
-        if ($this->galleryImages->isNotEmpty()) {
-            return $this->galleryImages->first()->url;
+        $gallery = $this->galleries()->first();
+        if ($gallery && file_exists(public_path($gallery->file_path))) {
+            return asset($gallery->file_path);
         }
-        
-        return asset('storage/images/placeholder.png');
+
+        return asset('img/placeholder-no-image.png');
     }
 }
