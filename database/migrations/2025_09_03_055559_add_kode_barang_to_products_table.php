@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->string('kode_barang', 12)->nullable()->unique()->after('id_kategori');
+            if (!Schema::hasColumn('products', 'kode_barang')) {
+                $table->string('kode_barang', 12)->nullable()->unique()->after('id_kategori');
+            }
         });
     }
 
@@ -22,8 +24,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropUnique(['kode_barang']);
-            $table->dropColumn('kode_barang');
+            if (Schema::hasColumn('products', 'kode_barang')) {
+                $table->dropUnique(['kode_barang']);
+                $table->dropColumn('kode_barang');
+            }
         });
     }
 };

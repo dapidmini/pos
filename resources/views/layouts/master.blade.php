@@ -190,7 +190,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
           <div class="image">
-            <img src="{{ asset('img/user/david-avatar.png') }}" class="img-circle elevation-2" alt="User David Santana">
+            <img src="{{ asset('img/users/david-avatar.png') }}" class="img-circle elevation-2" alt="User David Santana">
           </div>
           <div class="info">
             <a href="#" class="d-block">David Santana</a>

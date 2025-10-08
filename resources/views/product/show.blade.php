@@ -21,7 +21,8 @@
     @if ($product)
     <div class="d-flex justify-content-start align-items-top mb-5">
       <div class="product-img mr-3">
-        <img src="{{ file_exists(public_path($product->image)https://picsum.photos/300" alt="{{ $product->nama }}" style="width: 300px;" class="mb-3" data-toggle="modal" data-target="#productGalleryModal">
+        <img src="{{ $product->galleryImages->first() ? asset($product->galleryImages->first()->file_path) : asset('img/placeholder-no-image.jpg') }}" 
+          alt="{{ $product->nama }}" style="width: 300px;" class="mb-3" data-toggle="modal" data-target="#productGalleryModal">
       </div>
       <div class="product-qr-code">
         {!! QrCode::size(300)->generate($product->kode_barang) !!}
