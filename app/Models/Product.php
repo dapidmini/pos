@@ -82,7 +82,7 @@ class Product extends Model
 
     public function getMainImageUrlAttribute()
     {
-        $gallery = $this->galleries()->first();
+        $gallery = $this->galleryImages()->first();
         if ($gallery && file_exists(public_path($gallery->file_path))) {
             return asset($gallery->file_path);
         }

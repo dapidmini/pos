@@ -2,11 +2,13 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\GalleryImage;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\File;
+use App\Services\ImageGeneratorService;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class GalleryImagesSeeder extends Seeder
 {
@@ -36,40 +38,26 @@ class GalleryImagesSeeder extends Seeder
             }
 
             foreach ($items as $item) {
-                $kodeBaru = 'UNKNOWN';
-                $fileName = $filePath = '';
-                if ($module == 'Product' && $item->kode_barang) {
-                    $kodeBaru = $item->kode_barang;
-                    $fileName = "product-{$kodeBaru}.jpg";
-                }
+                $kodeBaru = $item->kode_barang ?? 'UNKNOWN';
+                $fileName = strtolower($module) . "-{$kodeBaru}.jpg";
                 $filePath = "img/{$folderName}/{$fileName}";
+                $fullPath = public_path($filePath);
 
                 // pastikan folder tujuan memang ada
-                $destinationPath = public_path("img/{$folderName}");
-                if (!File::exists($destinationPath)) {
-                    File::makeDirectory($destinationPath, 0755, true);
-                }
+                File::ensureDirectoryExists(dirname($fullPath), 0755, true);
 
-                // cek apakah file fisik ada, jika tidak maka copy placeholder
-                $absoluteFilePath = public_path($filePath);
-                if (!File::exists($absoluteFilePath)) {
-                    $placeholder = public_path('img/placeholder-no-image.jpg');
-                    if (File::exists($placeholder)) {
-                        File::copy($placeholder, $absoluteFilePath);
-                    } else {
-                        $this->command->warn("⚠️ File placeholder tidak ditemukan di {$placeholder}");
-                    }
-                }
-                
-                // Simpan data gallery
-                \App\Models\GalleryImage::create([
-                    'imageable_id'   => $item->id,
-                    'imageable_type' => $modelClass,
-                    'file_path'      => $filePath,
-                    'original_name'  => $fileName,
-                    'created_at'     => now(),
-                    'updated_at'     => now(),
-                ]);
+                ImageGeneratorService::downloadRandomOrPlaceholder($fullPath, 600);
+
+                GalleryImage::updateOrCreate(
+                    [
+                        'imageable_id' => $item->id,
+                        'imageable_type' => $modelClass,
+                    ],
+                    [
+                        'file_path'     => $filePath,
+                        'original_name' => $fileName,
+                    ]
+                );
             }
 
             DB::commit();

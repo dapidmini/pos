@@ -8,7 +8,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h3 class="mr-3">Detail Produk <span id="productID">{{ $product->id }}</span></h3>
+        <h3 class="mr-3">Detail Produk</h3>
       </div>
       <div class="col-sm-6 d-flex flex-column align-items-end">
         <ol class="breadcrumb mb-2">
@@ -21,7 +21,7 @@
     @if ($product)
     <div class="d-flex justify-content-start align-items-top mb-5">
       <div class="product-img mr-3">
-        <img src="{{ $product->galleryImages->first() ? asset($product->galleryImages->first()->file_path) : asset('img/placeholder-no-image.jpg') }}" 
+        <img src="{{ $product->galleryImages->isNotEmpty() ? $product->main_image_url : asset('img/placeholder-no-image.jpg') }}" 
           alt="{{ $product->nama }}" style="width: 300px;" class="mb-3" data-toggle="modal" data-target="#productGalleryModal">
       </div>
       <div class="product-qr-code">
@@ -111,20 +111,40 @@
 
           <div class="modal-body">
             <div id="carouselProductGallery" class="carousel slide" data-ride="carousel">
-              <ol class="carousel-indicators bulat">
-                <li data-target="#carouselProductGallery" data-slide-to="0" class="active"></li>
-                <li data-target="#carouselProductGallery" data-slide-to="1"></li>
-                <li data-target="#carouselProductGallery" data-slide-to="2"></li>
+              @if($product->galleryImages->isNotEmpty())
+                <ol class="carousel-indicators bulat">
+                  @foreach ($product->galleryImages as $index => $gallery)
+                    <li data-target="#carouselProductGallery" data-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}"></li>
+                  @endforeach
+                  <li data-target="#carouselProductGallery" data-slide-to="{{ count($product->galleryImages) }}"></li>
+                </ol>
+              @endif
               </ol>
               <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img src="https://picsum.photos/1200/800" class="d-block mx-auto img-carousel" alt="Product 1">
-                </div>
+                @if($product->galleryImages->isNotEmpty())
+                  @foreach ($product->galleryImages as $index => $gallery)
+                    @php
+                      $path = public_path($gallery->file_path);
+                      $imgUrl = file_exists($path) ? asset($gallery->file_path) : asset('img/placeholder-no-image.jpg');
+                    @endphp
+                    <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                      <img src="{{ $imgUrl }}" class="d-block mx-auto img-carousel" alt="Product Image {{ $index + 1 }}">
+                    </div>
+                  @endforeach
+                @else
+                  <div class="carousel-item active">
+                    <img src="{{ asset('img/placeholder-no-image.jpg') }}" class="d-block mx-auto img-carousel" alt="No Image Available">
+                  </div>
+                @endif
+
+                {{-- ✅ Tambahkan slide terakhir untuk QR Code --}}
                 <div class="carousel-item">
-                  <img src="https://picsum.photos/800/1200" class="d-block mx-auto img-carousel" alt="Product 2">
-                </div>
-                <div class="carousel-item">
-                  <img src="https://picsum.photos/1920/1080" class="d-block mx-auto img-carousel" alt="Product 3">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 400px; background: #f9f9f9;">
+                        <div class="text-center">
+                            {!! QrCode::size(300)->generate($product->kode_barang ?? 'UNKNOWN') !!}
+                            <p class="mt-3 text-muted">Kode Produk: {{ $product->kode_barang ?? '-' }}</p>
+                        </div>
+                    </div>
                 </div>
               </div>
               <a class="carousel-control-prev" href="#carouselProductGallery" role="button" data-slide="prev">
